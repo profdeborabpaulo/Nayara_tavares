@@ -1,20 +1,33 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  StyleSheet, 
+  TouchableOpacity, 
+  ScrollView 
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function HomeScreen( ) {
+interface Tarefa {
+  id: number;
+  texto: string;
+  concluida: boolean;
+}
+
+export default function HomeScreen() {
   const [tarefa, setTarefa] = useState('');
-  const [tarefas, setTarefas] = useState([
+  const [tarefas, setTarefas] = useState<Tarefa[]>([
     { id: 1, texto: 'Estudar React-Native', concluida: false },
     { id: 2, texto: 'Aprender useState', concluida: false },
     { id: 3, texto: 'Criar a primeira tela', concluida: false },
   ]);
 
-  function adicionarTarefa( ) {
-    if (!tarefa.trim( )) return;
+  function adicionarTarefa() {
+    if (!tarefa.trim()) return; // Impede tarefas em branco
 
-    const novaTarefa = {
-      id: Date.now( ),
+    const novaTarefa: Tarefa = {
+      id: Date.now(),
       texto: tarefa,
       concluida: false,
     };
@@ -39,11 +52,13 @@ export default function HomeScreen( ) {
 
   return (
     <View style={styles.container}>
+      {/* Título */}
       <View style={styles.tituloContainer}>
         <Ionicons name="list-circle" size={30} color="#2196f3" />
         <Text style={styles.title}>Gerenciador de Tarefas</Text>
       </View>
 
+      {/* Contadores */}
       <View style={styles.contadorContainer}>
         <View style={[styles.badge, styles.badgeAzul]}>
           <Ionicons name="reader-outline" size={16} color="#1565c0" />
@@ -55,23 +70,25 @@ export default function HomeScreen( ) {
         </View>
       </View>
 
+      {/* Input de nova tarefa */}
       <View style={styles.inputContainer}>
         <Ionicons name="create-outline" size={20} color="#9e9e9e" style={{ marginLeft: 10 }} />
         <TextInput
           style={styles.input}
-          placeholder='Digite uma tarefa:'
+          placeholder="Digite uma tarefa:"
           value={tarefa}
           onChangeText={setTarefa}
         />
       </View>
 
-      {/*Aula 10/09/2026 */}
+      {/* Botão Adicionar */}
       <TouchableOpacity style={styles.botaoAdicionar} onPress={adicionarTarefa}>
         <Ionicons name="add-circle" size={20} color="#fff" style={{ marginRight: 6 }} />
         <Text style={styles.botaoAdicionarTexto}>ADICIONAR</Text>
       </TouchableOpacity>
 
-      <ScrollView>
+      {/* Lista de Tarefas */}
+      <ScrollView showsVerticalScrollIndicator={false}>
         {tarefas.length === 0 && (
           <View style={styles.vazioContainer}>
             <Ionicons name="happy-outline" size={40} color="#bdbdbd" />
@@ -115,12 +132,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fafafa',
+    backgroundColor: '#D6D1B3',
+    paddingTop: 50,
   },
   tituloContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 6,
+    marginBottom: 12,
   },
   title: {
     fontSize: 22,
